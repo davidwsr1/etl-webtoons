@@ -11,3 +11,14 @@ Este projeto realiza um **ETL** de webtoons populares, salva os dados em **CSV**
 - Salva os dados em CSV e banco SQLite
 - Dashboard interativo mostrando os webtoons mais populares
 
+## Criar ambiente virtual e instalar dependências:
+python -m venv .venv
+source .venv/bin/activate  # Linux/Mac
+.venv\Scripts\activate     # Windows
+pip install -r requirements.txt
+
+## Rodar o ETL:
+python src/main.py
+
+## Rodar o dashboard:
+streamlit run dashboard/app.py
