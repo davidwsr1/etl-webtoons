@@ -1,24 +1,169 @@
+# ETL Webtoon Analytics
 
-ETL de Webtoons com dashboard Streamlit - projeto usado como base os ensinamentos da Bootcamp TOTVS + curiosidade.
+Pipeline de Engenharia de Dados desenvolvido em Python e PySpark para extração, transformação e análise de dados de Webtoons utilizando a arquitetura Medallion (Bronze, Silver e Gold).
 
-# ETL Webtoon + Dashboard Streamlit
+## Objetivo
 
-Este projeto realiza um **ETL** de webtoons populares, salva os dados em **CSV** e **SQLite**, e gera um **dashboard interativo** com Streamlit.
+Construir uma pipeline ETL completa capaz de:
 
-## Funcionalidades
-- Extrai dados do site Webtoons (título, gênero e likes)
-- Converte likes em números inteiros
-- Salva os dados em CSV e banco SQLite
-- Dashboard interativo mostrando os webtoons mais populares
+* Extrair dados do ranking de Webtoons utilizando Selenium.
+* Armazenar os dados brutos na camada Bronze.
+* Realizar limpeza e padronização com PySpark na camada Silver.
+* Gerar dados analíticos na camada Gold.
+* Demonstrar conceitos de Engenharia de Dados, Spark e Data Lake.
 
-## Criar ambiente virtual e instalar dependências:
-python -m venv .venv
-source .venv/bin/activate  # Linux/Mac
-.venv\Scripts\activate     # Windows
+---
+
+## Tecnologias Utilizadas
+
+* Python
+* Selenium
+* Pandas
+* PySpark
+* Apache Spark
+* Apache Airflow (estrutura preparada)
+* CSV
+* Arquitetura Medallion
+
+---
+
+## Arquitetura
+
+```text
+Webtoon Ranking
+       │
+       ▼
+Extração (Selenium)
+       │
+       ▼
+Bronze (Raw Data)
+       │
+       ▼
+Silver (Dados Tratados)
+       │
+       ▼
+Gold (Dados Analíticos)
+```
+
+---
+
+## Estrutura do Projeto
+
+```text
+ETL-Webtoon/
+│
+├── data/
+│   ├── bronze/
+│   ├── silver/
+│   └── gold/
+│
+├── dags/
+│   └── etl_webtoon_dag.py
+│
+├── src/
+│   ├── extract/
+│   │   └── extract.py
+│   │
+│   ├── load/
+│   │   └── load.py
+│   │
+│   ├── spark/
+│   │   └── spark_session.py
+│   │
+│   ├── transform/
+│   │   ├── bronze_to_silver.py
+│   │   └── silver_to_gold.py
+│   │
+│   └── main.py
+│
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## Camada Bronze
+
+Armazena os dados exatamente como foram extraídos da fonte.
+
+Exemplo:
+
+| titulo                  | genero        | likes |
+| ----------------------- | ------------- | ----- |
+| My Giant Nerd Boyfriend | Slice of Life | 77.9M |
+
+---
+
+## Camada Silver
+
+Realiza:
+
+* Limpeza de dados
+* Remoção de duplicidades
+* Conversão de likes para formato numérico
+* Padronização de textos
+* Inclusão de metadados de processamento
+
+---
+
+## Camada Gold
+
+Gera datasets analíticos:
+
+### Top Webtoons
+
+Ranking dos Webtoons mais populares.
+
+### Likes por Gênero
+
+Quantidade total de likes agrupada por gênero.
+
+### Gêneros Mais Populares
+
+Classificação dos gêneros com maior engajamento.
+
+---
+
+## Como Executar
+
+### Instalar dependências
+
+```bash
 pip install -r requirements.txt
+```
 
-## Rodar o ETL:
+### Executar pipeline
+
+```bash
 python src/main.py
+```
 
-## Rodar o dashboard:
-streamlit run dashboard/app.py
+---
+
+## Resultados
+
+A pipeline realiza:
+
+1. Extração automática do ranking Webtoon.
+2. Armazenamento na camada Bronze.
+3. Processamento utilizando PySpark.
+4. Geração de datasets analíticos na camada Gold.
+
+---
+
+## Próximas Evoluções
+
+* Integração com Google Cloud Storage (GCS)
+* Processamento em Dataproc
+* Armazenamento em BigQuery
+* Orquestração com Cloud Composer (Airflow)
+* Dashboard em Looker Studio
+* Processamento em Streaming
+
+---
+
+## Autor
+
+David Rocha
+
+Estudante de Análise e Desenvolvimento de Sistemas – PUC Minas.
