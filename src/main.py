@@ -1,28 +1,35 @@
-from extract import extrair_webtoons
-from transform import transformar
-from load import salvar_csv, salvar_sqlite
-from ai import gerar_resumo
+from extract.extrair_webtoon import extrair_webtoons
+from load.load import salvar_bronze_csv
+
+from spark.criar_spark import criar_spark
+
+from transform.bronze_to_silver import bronze_to_silver
+from transform.silver_to_gold import silver_to_gold
 
 
 def main():
-    print("Extraindo dados...")
+
+    print("Iniciando pipeline...")
+
+    # Extract
     dados = extrair_webtoons()
 
-    print("Transformando dados...")
-    dados_tratados = transformar(dados)
+    # Bronze
+    salvar_bronze_csv(dados)
 
-    print("Salvando dados...")
-    salvar_csv(dados_tratados)
-    salvar_sqlite(dados_tratados)
+    # Spark
+    spark = criar_spark()
 
-    print("ETL finalizada!")
+    # Silver
+    df_silver = bronze_to_silver(spark)
 
-    print("\nResumos gerados:\n")
+    # Gold
+    silver_to_gold(df_silver)
 
-    for item in dados_tratados[:5]:
-        resumo = gerar_resumo(item)
-        print("-----")
-        print(resumo)
+    spark.stop()
+
+    print("Pipeline concluída com sucesso!")
+
 
 if __name__ == "__main__":
     main()
